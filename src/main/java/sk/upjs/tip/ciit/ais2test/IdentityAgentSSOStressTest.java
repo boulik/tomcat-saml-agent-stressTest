@@ -37,15 +37,19 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Properties;
 
-import javax.servlet.http.HttpServletRequest;
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletException;
 
 import org.openjdk.jcstress.annotations.*;
-import org.openjdk.jcstress.infra.results.II_Result;
-import org.openjdk.jcstress.infra.results.ZZZZ_Result;
 import org.openjdk.jcstress.infra.results.ZZ_Result;
+import org.springframework.mock.web.MockFilterChain;
+import org.springframework.mock.web.MockFilterConfig;
+import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.mock.web.MockServletContext;
+import org.wso2.carbon.identity.sso.agent.SAML2SSOAgentFilter;
 import org.wso2.carbon.identity.sso.agent.bean.SSOAgentConfig;
 import org.wso2.carbon.identity.sso.agent.exception.SSOAgentException;
-import org.wso2.carbon.identity.sso.agent.saml.SAML2SSOManager;
 import org.wso2.carbon.identity.sso.agent.security.SSOAgentX509Credential;
 import org.wso2.carbon.identity.sso.agent.security.SSOAgentX509KeyStoreCredential;
 import org.wso2.carbon.identity.sso.agent.util.SSOAgentConstants;
@@ -55,11 +59,21 @@ import org.wso2.carbon.identity.sso.agent.util.SSOAgentConstants;
 @JCStressTest
 // Outline the outcomes here. The default outcome is provided, you need to remove it:
 @Outcome(id = "false, false", expect = Expect.ACCEPTABLE, desc = "Default outcome.")
-@Outcome(expect = Expect.ACCEPTABLE_INTERESTING, desc = "Other cases are not good.")
+@Outcome(expect = Expect.FORBIDDEN, desc = "Other cases are not good.")
 @State
 public class IdentityAgentSSOStressTest {
 
+	
+	public IdentityAgentSSOStressTest() {
+
+		// TODO Auto-generated constructor stub
+		createMocks();
+	}
+	
+	private static final String SSO_AGENT_CONFIG_ATTR_NAME = "org.wso2.carbon.identity.sso.agent.SSOAgentConfig";
 	SSOAgentConfig ssoAgentConfig = createSsoAgentConfig();
+	private SAML2SSOAgentFilter ssoAgentFilter = null;
+	private MockFilterChain filterChain = null;
 	
     public SSOAgentConfig createSsoAgentConfig(){
     	
@@ -93,42 +107,55 @@ public class IdentityAgentSSOStressTest {
     	}
     	return ssoAgentConfig;
     }
+    
+    public void createMocks() {
+    	try {
+    		MockServletContext servletContext = new MockServletContext();
+    		servletContext.setAttribute( SSO_AGENT_CONFIG_ATTR_NAME, ssoAgentConfig );
+
+    		FilterConfig filterConfig = new MockFilterConfig(servletContext);
+
+    		ssoAgentFilter = new SAML2SSOAgentFilter();
+    		ssoAgentFilter.init(filterConfig);
+
+    		filterChain = new MockFilterChain();
+    	} catch (ServletException e) {
+    		// TODO Auto-generated catch block
+    		e.printStackTrace();
+    	}
+    	
+    }
+
 	
 	public void wrongAccess() {
 		
 		
 		try {
-			SAML2SSOManager samlSSOManager;
-			samlSSOManager = new SAML2SSOManager(ssoAgentConfig);
-			boolean isPassiveAuth = ssoAgentConfig.getSAML2().isPassiveAuthn();
-			ssoAgentConfig.getSAML2().setPassiveAuthn(true);
-			HttpServletRequest request = new org.springframework.mock.web.MockHttpServletRequest() ;
-			String redirectUrl = samlSSOManager.buildRedirectRequest(request, false);
-			ssoAgentConfig.getSAML2().setPassiveAuthn(isPassiveAuth);
-		} catch (SSOAgentException e) {
+			MockHttpServletRequest request = new MockHttpServletRequest( "POST", "http://www.localhost.org/ais/login.do");
+	        MockHttpServletResponse response = new MockHttpServletResponse();
+
+	        ssoAgentFilter.doFilter(request, response, filterChain);
+
+		
+		} catch (ServletException | IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 	}
 	
 	
 	
     @Actor
     public void actor1(ZZ_Result r) {
-        // Put the code for first thread here
     	wrongAccess();
     	r.r1 = ssoAgentConfig.getSAML2().isPassiveAuthn();  
-//    	r.r2 = ssoAgentConfig.getSAML2().isPassiveAuthn();  
     }
 
     @Actor
     public void actor2(ZZ_Result r) {
-        // Put the code for second thread here
-//    	r.r3 = ssoAgentConfig.getSAML2().isPassiveAuthn();  
     	wrongAccess();
     	r.r2 = ssoAgentConfig.getSAML2().isPassiveAuthn();  
-//    	r.r4 = ssoAgentConfig.getSAML2().isPassiveAuthn();  
     }
 
 }
