@@ -96,7 +96,7 @@ public class IdentityAgentSSOStressTest {
 
     		ssoAgentConfig = new SSOAgentConfig();
     		ssoAgentConfig.initConfig(properties);
-    		//        ssoAgentConfig.setKeyStorePath(keyStorePath);
+    		        ssoAgentConfig.setKeyStorePath(keyStorePath);
     		ssoAgentConfig.getSAML2().setSSOAgentX509Credential(credential);
     	} catch (IOException e) {
     		// TODO Auto-generated catch block
