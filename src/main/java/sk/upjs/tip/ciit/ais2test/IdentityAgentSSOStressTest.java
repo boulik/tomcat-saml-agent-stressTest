@@ -47,12 +47,12 @@ import org.springframework.mock.web.MockFilterConfig;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.mock.web.MockServletContext;
-import org.wso2.carbon.identity.sso.agent.SAML2SSOAgentFilter;
-import org.wso2.carbon.identity.sso.agent.bean.SSOAgentConfig;
-import org.wso2.carbon.identity.sso.agent.exception.SSOAgentException;
-import org.wso2.carbon.identity.sso.agent.security.SSOAgentX509Credential;
-import org.wso2.carbon.identity.sso.agent.security.SSOAgentX509KeyStoreCredential;
-import org.wso2.carbon.identity.sso.agent.util.SSOAgentConstants;
+import io.asgardio.tomcat.saml.agent.SAML2SSOAgentFilter;
+import io.asgardio.java.saml.sdk.bean.SSOAgentConfig;
+import io.asgardio.java.saml.sdk.exception.SSOAgentException;
+import io.asgardio.java.saml.sdk.security.SSOAgentX509Credential;
+import io.asgardio.java.saml.sdk.security.SSOAgentX509KeyStoreCredential;
+import io.asgardio.java.saml.sdk.util.SSOAgentConstants;
 
 // See jcstress-samples or existing tests for API introduction and testing guidelines
 

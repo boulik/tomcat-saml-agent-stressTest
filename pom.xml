@@ -40,6 +40,46 @@
 
 	<name>JCStress test sample</name>
 
+    <repositories>
+        <repository>
+            <id>wso2-nexus</id>
+            <name>WSO2 internal Repository</name>
+            <url>http://maven.wso2.org/nexus/content/groups/wso2-public/</url>
+            <releases>
+                <enabled>true</enabled>
+                <updatePolicy>daily</updatePolicy>
+                <checksumPolicy>ignore</checksumPolicy>
+            </releases>
+        </repository>
+
+        <repository>
+            <id>wso2.releases</id>
+            <name>WSO2 internal Repository</name>
+            <url>http://maven.wso2.org/nexus/content/repositories/releases/</url>
+            <releases>
+                <enabled>true</enabled>
+                <updatePolicy>daily</updatePolicy>
+                <checksumPolicy>ignore</checksumPolicy>
+            </releases>
+        </repository>
+
+        <repository>
+            <id>wso2.snapshots</id>
+            <name>Apache Snapshot Repository</name>
+            <url>http://maven.wso2.org/nexus/content/repositories/snapshots/</url>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>daily</updatePolicy>
+            </snapshots>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+        </repository>
+
+    </repositories>
+
+
+
 	<!--
 		This is the demo/sample template build script for building concurrency tests with JCStress.
 		Edit as needed.
@@ -56,9 +96,9 @@
 			<version>${jcstress.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>org.wso2.carbon.identity.agent.sso.java</groupId>
-			<artifactId>org.wso2.carbon.identity.sso.agent</artifactId>
-			<version>5.2.3</version>
+			<groupId>io.asgardio.tomcat.saml.agent</groupId>
+			<artifactId>io.asgardio.tomcat.saml.agent</artifactId>
+			<version>${io.asgardio.tomcat.saml.agent.version}</version>
 			<exclusions>
 				<exclusion>
 					<groupId>org.apache.httpcomponents</groupId>
@@ -67,10 +107,18 @@
 			</exclusions>
 		</dependency>
 		<dependency>
+			<groupId>io.asgardio.java.saml.sdk</groupId>
+			<artifactId>io.asgardio.java.saml.sdk</artifactId>
+			<version>0.1.4-SNAPSHOT</version>
+		</dependency>
+
+		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>
-			<version>4.3.28.RELEASE</version>
+			<version>${spring-test.version}</version>
 		</dependency>
+		
+		<!-- 
 		<dependency>
 			<groupId>org.wso2.carbon.identity.framework</groupId>
 			<artifactId>org.wso2.carbon.identity.core</artifactId>
@@ -81,27 +129,9 @@
 			<artifactId>org.wso2.carbon.tenant.common</artifactId>
 			<version>4.7.0</version>
 		</dependency>
+		 -->
 
 	</dependencies>
-
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-
-		<!--
-			jcstress version to use with this project.
-		-->
-		<jcstress.version>0.6</jcstress.version>
-
-		<!--
-			Java source/target to use for compilation.
-		-->
-		<javac.target>1.8</javac.target>
-
-		<!--
-			Name of the test Uber-JAR to generate.
-		-->
-		<uberjar.name>jcstress</uberjar.name>
-	</properties>
 
 	<build>
 		<plugins>
@@ -155,41 +185,23 @@
 		</plugins>
 	</build>
 
-	<repositories>
-		<repository>
-			<id>wso2-nexus</id>
-			<name>WSO2 internal Repository</name>
-			<url>http://maven.wso2.org/nexus/content/groups/wso2-public/</url>
-			<releases>
-				<enabled>true</enabled>
-				<updatePolicy>daily</updatePolicy>
-				<checksumPolicy>ignore</checksumPolicy>
-			</releases>
-		</repository>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-		<repository>
-			<id>wso2.releases</id>
-			<name>WSO2 internal Repository</name>
-			<url>http://maven.wso2.org/nexus/content/repositories/releases/</url>
-			<releases>
-				<enabled>true</enabled>
-				<updatePolicy>daily</updatePolicy>
-				<checksumPolicy>ignore</checksumPolicy>
-			</releases>
-		</repository>
+		<jcstress.version>0.6</jcstress.version>
 
-		<repository>
-			<id>wso2.snapshots</id>
-			<name>Apache Snapshot Repository</name>
-			<url>http://maven.wso2.org/nexus/content/repositories/snapshots/</url>
-			<snapshots>
-				<enabled>true</enabled>
-				<updatePolicy>daily</updatePolicy>
-			</snapshots>
-			<releases>
-				<enabled>false</enabled>
-			</releases>
-		</repository>
+		<io.asgardio.tomcat.saml.agent.version>0.1.17-SNAPSHOT</io.asgardio.tomcat.saml.agent.version>
+		<spring-test.version>4.3.28.RELEASE</spring-test.version>
+		
+		<javac.target>1.8</javac.target>
 
-	</repositories>
+		<!--
+			Name of the test Uber-JAR to generate.
+		-->
+		<uberjar.name>jcstress</uberjar.name>
+		
+	</properties>
+
+	
+	
 </project>
