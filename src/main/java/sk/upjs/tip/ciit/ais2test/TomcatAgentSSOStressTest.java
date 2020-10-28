@@ -61,10 +61,10 @@ import io.asgardio.java.saml.sdk.util.SSOAgentConstants;
 @Outcome(id = "false, false", expect = Expect.ACCEPTABLE, desc = "Default outcome.")
 @Outcome(expect = Expect.FORBIDDEN, desc = "Other cases are not good.")
 @State
-public class IdentityAgentSSOStressTest {
+public class TomcatAgentSSOStressTest {
 
 	
-	public IdentityAgentSSOStressTest() {
+	public TomcatAgentSSOStressTest() {
 
 		// TODO Auto-generated constructor stub
 		createMocks();
