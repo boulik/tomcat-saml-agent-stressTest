@@ -38,7 +38,7 @@
 	<version>0.0.1</version>
 	<packaging>jar</packaging>
 
-	<name>JCStress test sample</name>
+	<name>Asgardio - Tomcat SAML Agent - stressTest</name>
 
     <repositories>
         <repository>
@@ -185,7 +185,7 @@
 
 		<jcstress.version>0.6</jcstress.version>
 
-		<io.asgardio.tomcat.saml.agent.version>0.1.17-SNAPSHOT</io.asgardio.tomcat.saml.agent.version>
+		<io.asgardio.tomcat.saml.agent.version>0.1.18-SNAPSHOT</io.asgardio.tomcat.saml.agent.version>
 		<spring-test.version>4.3.28.RELEASE</spring-test.version>
 		
 		<javac.target>1.8</javac.target>
